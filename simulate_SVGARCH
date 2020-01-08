@@ -1,0 +1,14 @@
+def simulate_svgarch(gamma, alpha, beta, phi, T): #alpha + beta < 1
+    y = [0 for t in range(T)]
+    v = [0 for t in range(T)]
+    mean_v = [0 for t in range(T)]
+    var_v = [0 for t in range(T)]
+    v[0] = gamma/(1 - alpha - beta)
+    for t in range(T-1):
+        xi = np.random.normal(0 , 1, size = 1)
+        eps = np.random.normal(0 , 1, size = 1)
+        y[t] = np.sqrt(v[t])*eps**2
+        v[t+1] = gamma + alpha*v[t] + beta*v[t]*(phi*eps + np.sqrt(1 - phi**2)*xi)**2
+        mean_v[t+1] = np.mean(v[0:t])
+        var_v[t+1] = np.std(v[0:t])**2
+    return y, v, mean_v, var_v
